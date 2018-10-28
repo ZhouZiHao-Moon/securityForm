@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>江苏省南通中学安全月报系统</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <script src="/static/js/mdui.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/mdui.min.css">
+    <script>
+        function post() {
+            var form = $("<form>");
+            form.attr("style", "display:none");
+            form.attr("method", "post");
+            form.attr("action", "/admin/");
+            $("body").append(form);
+            var input1=$("<input>");
+            input1.attr("type","hidden");
+            input1.attr("name","password");
+            input1.attr("value",$("#password").val());
+            form.append(input1);
+            var input2=$("<input>");
+            input2.attr("type","hidden");
+            input2.attr("name","yearmonth");
+            input2.attr("value",$("#yearmonth").val());
+            form.append(input2);
+            form.submit();
+        }
+    </script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-indigo">
+    <div class="mdui-appbar">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-typo-headline">江苏省南通中学安全月报系统管理端</a>
+        </div>
+    </div>
+    <div class="mdui-container">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">管理员密码</label>
+            <input class="mdui-textfield-input" id="password"/>
+        </div>
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">需要查看的年月</label>
+            <input class="mdui-textfield-input" id="yearmonth"/>
+            <div class="mdui-textfield-helper">格式“YYYYMM”，如201809表示2018年9月</div>
+        </div>
+        <button id="enter" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="post();">查询</button>
+    </div>
+    <div class="mdui-typo-caption" style="text-align: center;margin-bottom: 16px">@南通中学极客社 周子皓</div>
+    <script>mdui.mutation();</script>
+</body>
+</html>

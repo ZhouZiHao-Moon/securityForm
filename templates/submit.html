@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>江苏省南通中学安全月报系统</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <script src="/static/js/mdui.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/mdui.min.css">
+    <script>
+        function get() {
+            var month = new Date().getMonth() + 1;
+            console.log(month);
+            $("#month").val(month);
+            var url = window.location.href;
+            var reg = new RegExp(".*?/submit/(\\d)/(\\d*)", "g");
+            var gc = reg.exec(url);
+            var grade = gc[1];
+            var clas = gc[2];
+            if(grade == '1') grade = '高一(';
+            else if(grade == '2') grade = '高二(';
+            else if(grade == '3') grade = '高三(';
+            var classname = grade + clas + ')班';
+            $("#class").val(classname);
+            mdui.updateTextFields();
+        }
+        function check() {
+            var url = window.location.href;
+            var reg = new RegExp(".*?/submit/(\\d)/(\\d*)", "g");
+            var gc = reg.exec(url);
+            var grade = gc[1];
+            var clas = gc[2];
+            var data = {
+                'class': clas,
+                'grade': grade,
+                'password': $("#check_password").val()
+            };
+            $.post('../../../check/', data=data, function (data) {
+                if(data == 'fail')
+                {
+                    mdui.alert('验证码错误！');
+                    return;
+                }
+                $('#check').hide();
+                $('#form').show();
+                $("#master").val(data);
+                $("#password").val($("#check_password").val());
+                mdui.updateTextFields();
+            })
+        }
+        function post() {
+            var data = {
+                'master': $("#master").val(),
+                'week1': $("#week1").val(),
+                'week2': $("#week2").val(),
+                'week3': $("#week3").val(),
+                'week4': $("#week4").val(),
+                'danger': $("#danger").val(),
+                'action': $("#action").val(),
+                'accident': $("#accident").val(),
+                'password': $("#password").val()
+            }
+            $.post(window.location.pathname, data=data, function (data) {
+                if(data=='success')
+                {
+                    mdui.alert('3秒后自动跳转', '提交成功!');
+                    setTimeout(function(){window.location.href = '/';}, 3000);
+                }
+                else
+                {
+                    mdui.alert(data, '提交失败!');
+                }
+            })
+        }
+    </script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-indigo">
+    <div class="mdui-appbar">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-typo-headline">江苏省南通中学班主任安全工作月报表</a>
+        </div>
+    </div>
+    <div id="check" class="mdui-container mdui-typo">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">验证码</label>
+            <input class="mdui-textfield-input" id="check_password"/>
+        </div>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="check();">提交</button>
+    </div>
+    <div id="form" class="mdui-container mdui-typo">
+        <form>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">班级</label>
+                <input class="mdui-textfield-input" id="class" disabled/>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">班主任</label>
+                <input class="mdui-textfield-input" id="master" value="{{ master }}"/>
+            </div>
+            <div id="tf" class="mdui-textfield mdui-textfield-floating-label mdui-textfield-not-empty">
+                <label class="mdui-textfield-label">月份</label>
+                <input class="mdui-textfield-input" id="month" disabled/>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">本月安全教育内容：第一周</label>
+                <textarea class="mdui-textfield-input" id="week1">{{ week1 }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">本月安全教育内容：第二周</label>
+                <textarea class="mdui-textfield-input" id="week2">{{ week2 }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">本月安全教育内容：第三周</label>
+                <textarea class="mdui-textfield-input" id="week3">{{ week3 }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">本月安全教育内容：第四周</label>
+                <textarea class="mdui-textfield-input" id="week4">{{ week4 }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">存在隐患</label>
+                <textarea class="mdui-textfield-input" id="danger">{{ danger }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">主要措施</label>
+                <textarea class="mdui-textfield-input" id="action">{{ action }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">安全事故</label>
+                <textarea class="mdui-textfield-input" id="accident">{{ accident }}</textarea>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">验证码</label>
+                <input class="mdui-textfield-input" id="password"/>
+            </div>
+        </form>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="post();">提交</button>
+    </div>
+	<div class="mdui-typo-caption" style="text-align: center;margin-bottom: 16px">@南通中学极客社 周子皓</div>
+    <script>$("#form").hide();get();</script>
+</body>
+</html>

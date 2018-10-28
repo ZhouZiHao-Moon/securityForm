@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>江苏省南通中学安全月报系统</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <script src="../static/js/mdui.min.js"></script>
+    <script src="../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/mdui.min.css">
+    <script>
+        function get() {
+            $.get('get/',function (data) {
+                var data = eval('('+data+')');
+                for(var i=0;i<data.length;i++)
+                {
+                    var data2 = data[i];
+                    for(var j=0;j<data2.length;j++)
+                    {
+                        if(data2[j]==0)
+                        {
+                            $('#grade'+String(i+1)).append('<tr><td>Class '+String(j+1)+'</td><td style="color:red">未提交</td><td><a href="submit/'+String(i+1)+'/'+String(j+1)+'">提交</a></td></tr>');
+                        }
+                        else
+                        {
+                            $('#grade'+String(i+1)).append('<tr><td>Class '+String(j+1)+'</td><td>已提交</td><td><a href="submit/'+String(i+1)+'/'+String(j+1)+'">修改</a></td></tr>');
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-indigo">
+    <div class="mdui-appbar">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-typo-headline">江苏省南通中学安全月报系统</a>
+        </div>
+    </div>
+    <div class="mdui-container mdui-typo">
+        <div style="margin-top: 8px" class="mdui-table-fluid mdui-col-xs-12 mdui-col-md-4">
+            <table class="mdui-table">
+                <thead>
+                    <tr>
+                        <th>高一</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="grade1">
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 8px" class="mdui-table-fluid mdui-typo mdui-col-xs-12 mdui-col-md-4">
+            <table class="mdui-table">
+                <thead>
+                    <tr>
+                        <th>高二</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="grade2">
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 8px" class="mdui-table-fluid mdui-typo mdui-col-xs-12 mdui-col-md-4">
+            <table class="mdui-table">
+                <thead>
+                    <tr>
+                        <th>高三</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="grade3">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mdui-typo-caption" style="text-align: center; margin-bottom: 16px">@南通中学极客社 周子皓</div>
+    <script>get();</script>
+</body>
+</html>
